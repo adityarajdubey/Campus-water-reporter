@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Drinking Water Issue Reporter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Mobile top bar with menu button -->
+  <header class="mobile-header">
+    <button type="button" id="menuToggle" class="menu-toggle" aria-label="Open menu">&#9776;</button>
+    <span class="mobile-title">Campus Water Reporter</span>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">W</div>
+        <div>
+          <h1>Campus Water Reporter</h1>
+          <p>Drinking water issue tracker</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button type="button" class="nav-btn active" data-page="dashboard">Dashboard</button>
+        <button type="button" class="nav-btn" data-page="report">Report an Issue</button>
+        <button type="button" class="nav-btn" data-page="reports">All Reports</button>
+      </nav>
+    </aside>
+
+    <!-- Dark overlay used on mobile when the menu is open -->
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="pageSubtitle">Overview of campus drinking water complaints</p>
+        </div>
+      </header>
+
+      <!-- PAGE: Dashboard -->
+      <section id="page-dashboard" class="page">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <p class="stat-label">Total Reports</p>
+            <p class="stat-value" id="statTotal">0</p>
+          </article>
+          <article class="stat-card stat-pending">
+            <p class="stat-label">Pending Issues</p>
+            <p class="stat-value" id="statPending">0</p>
+          </article>
+          <article class="stat-card stat-progress">
+            <p class="stat-label">In Progress Issues</p>
+            <p class="stat-value" id="statProgress">0</p>
+          </article>
+          <article class="stat-card stat-resolved">
+            <p class="stat-label">Resolved Issues</p>
+            <p class="stat-value" id="statResolved">0</p>
+          </article>
+        </div>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Recent Reports</h3>
+            <button type="button" class="link-btn" data-page="reports">View all</button>
+          </div>
+          <div id="recentReports"></div>
+        </article>
+      </section>
+
+      <!-- PAGE: Report an Issue -->
+      <section id="page-report" class="page hidden">
+        <article class="card form-card">
+          <h3>Submit a drinking water complaint</h3>
+          <p class="form-intro">Fill in the details below. Fields marked with * are required.</p>
+
+          <form id="reportForm" novalidate>
+            <div class="form-row">
+              <label for="studentName">Student Name *</label>
+              <input type="text" id="studentName" name="studentName" maxlength="80" placeholder="Enter your full name">
+              <p class="error" id="error-studentName"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="building">Location / Building *</label>
+              <input type="text" id="building" name="building" maxlength="80" placeholder="e.g. Science Block, Hostel A">
+              <p class="error" id="error-building"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="specificLocation">Specific Location *</label>
+              <input type="text" id="specificLocation" name="specificLocation" maxlength="80" placeholder="e.g. Floor 2, Near Library">
+              <p class="error" id="error-specificLocation"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="category">Issue Category *</label>
+              <select id="category" name="category">
+                <option value="">Select a category</option>
+                <option value="Water leakage">Water leakage</option>
+                <option value="Dirty or contaminated water">Dirty or contaminated water</option>
+                <option value="Non-functional water cooler">Non-functional water cooler</option>
+                <option value="Empty water dispenser">Empty water dispenser</option>
+                <option value="Poor water quality">Poor water quality</option>
+                <option value="Other">Other water-related issue</option>
+              </select>
+              <p class="error" id="error-category"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="description">Description of the Issue *</label>
+              <textarea id="description" name="description" rows="5" maxlength="500" placeholder="Describe the problem clearly so staff can find and fix it."></textarea>
+              <p class="error" id="error-description"></p>
+            </div>
+
+            <button type="submit" class="primary-btn">Submit Report</button>
+          </form>
+
+          <p class="success hidden" id="successMessage"></p>
+        </article>
+      </section>
+
+      <!-- PAGE: All Reports -->
+      <section id="page-reports" class="page hidden">
+        <article class="card filters-card">
+          <div class="filters">
+            <div class="form-row">
+              <label for="searchInput">Search by ID or location</label>
+              <input type="text" id="searchInput" placeholder="e.g. CWR-0001 or Hostel A">
+            </div>
+            <div class="form-row">
+              <label for="filterCategory">Filter by category</label>
+              <select id="filterCategory">
+                <option value="all">All categories</option>
+                <option value="Water leakage">Water leakage</option>
+                <option value="Dirty or contaminated water">Dirty or contaminated water</option>
+                <option value="Non-functional water cooler">Non-functional water cooler</option>
+                <option value="Empty water dispenser">Empty water dispenser</option>
+                <option value="Poor water quality">Poor water quality</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="filterStatus">Filter by status</label>
+              <select id="filterStatus">
+                <option value="all">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div id="reportsList"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
